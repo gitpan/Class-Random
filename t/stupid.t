@@ -1,4 +1,8 @@
+# $Id: stupid.t,v 1.2 2002/08/06 17:04:02 pmh Exp $
+
 use strict;
+
+print "1..2\n";
 my %count;
 
 package T;
@@ -34,6 +38,7 @@ sub bar{
 
 package main;
 
+my $test;
 foreach(
   [choose => 'T'],
   [shuffle => 'S'],
@@ -47,13 +52,17 @@ foreach(
     $t->bar;
   }
 
-  my $ok=1;
+  my $ok;
   foreach(qw(a_foo a_bar b_foo b_bar)){
     if($count{$_}<25){
-      print "Failed to call $_ enough times to pass $mode test\n";
-      $ok=0;
+      $ok="Failed to call $_ enough times to pass $mode test";
     }
   }
-  print "$mode OK\n" if $ok;
+  ++$test;
+  if(defined $ok){
+    print "not ok $test # $ok\n";
+  }else{
+    print "ok $test # $mode\n";
+  }
 }
 
